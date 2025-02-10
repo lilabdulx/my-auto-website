@@ -2,7 +2,7 @@ import openai
 import os
 
 # Load the OpenAI API Key from GitHub Secrets
-openai.api_key = os.getenv("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")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Generate content using OpenAI API
 response = openai.Completion.create(
