@@ -1,35 +1,30 @@
 import openai
-import random
+import os
 
-# OpenAI API Key (get a free one at platform.openai.com)
-OPENAI_API_KEY = "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"
+# Set your OpenAI API Key
+openai.api_key = os.getenv('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')  # This should be set as a GitHub secret
 
-# List of topics for affiliate blog posts
-topics = [
-    "Best Budget Laptops for 2025",
-    "Top 10 Gadgets You Must Have",
-    "Affordable Gaming Accessories",
-    "Best Amazon Deals This Month",
-    "Wireless Headphones Under £50"
-]
-
-def generate_post():
-    topic = random.choice(topics)
-    prompt = f"Write a 500-word blog post about {topic} and include Amazon affiliate links."
-    
-    openai.api_key = OPENAI_API_KEY
-    
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}]
+# Generate content with OpenAI
+def generate_content():
+    prompt = "Write a blog post about the future of AI and automation."  # Modify this prompt as needed
+    response = openai.Completion.create(
+        model="text-davinci-003",  # You can change the model if needed
+        prompt=prompt,
+        max_tokens=500  # Adjust the token count based on the amount of content you want
     )
+    return response.choices[0].text.strip()
 
-    post_content = response["choices"][0]["message"]["content"]
+# Update the HTML content
+def update_html(content):
+    with open("index.html", "r") as file:
+        html_content = file.read()
 
-    filename = topic.replace(" ", "_").lower() + ".html"
-    with open(filename, "w", encoding="utf-8") as file:
-        file.write(f"<html><head><title>{topic}</title></head><body><h1>{topic}</h1><p>{post_content}</p></body></html>")
+    # Replace the placeholder with generated content
+    new_html_content = html_content.replace("<!-- GENERATED CONTENT -->", content)
 
-    print(f"Generated: {filename}")
+    with open("index.html", "w") as file:
+        file.write(new_html_content)
 
-generate_post()
+if __name__ == "__main__":
+    content = generate_content()  # Generate the content
+    update_html(content)  # Update the index.html file with the generated content
