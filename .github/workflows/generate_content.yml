@@ -1,0 +1,33 @@
+name: Generate Blog Post
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install openai
+
+      - name: Run generate_content.py
+        run: |
+          python generate_content.py
+
+      - name: Commit and push changes
+        run: |
+          git add index.html
+          git commit -m "Updated blog content"
+          git push
