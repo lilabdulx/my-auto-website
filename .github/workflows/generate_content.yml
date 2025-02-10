@@ -1,37 +1,39 @@
-name: Generate Content
+name: Generate Content and Update Website
 
 on:
+  schedule:
+    - cron: '0 0 * * *'  # This cron expression schedules it to run daily at midnight
   push:
     branches:
-      - main
-  schedule:
-    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+      - main  # This triggers the workflow when pushing to the main branch
 
 jobs:
-  generate:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install openai
+    - name: Install dependencies
+      run: |
+        pip install openai
 
-      - name: Run Python Script to Generate Content
-        run: |
-          python generate_content.py
+    - name: Run generate_content.py to update index.html
+      run: |
+        python generate_content.py
 
-      - name: Commit generated content
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "Update content from Python script"
-          git push
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v7
+      with:
+        author_name: 'github-actions'
+        author_email: 'github-actions@github.com'
+        message: 'Automated content update'
+
+    - name: Push changes to GitHub
+      run: git push
