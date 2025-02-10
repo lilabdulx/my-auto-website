@@ -1,4 +1,4 @@
-name: Generate Blog Post
+name: Generate Content and Push to GitHub Pages
 
 on:
   push:
@@ -6,28 +6,33 @@ on:
       - main
 
 jobs:
-  build:
+  generate_and_deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Install dependencies
-        run: |
-          pip install openai
+    - name: Install dependencies
+      run: |
+        pip install openai
 
-      - name: Run generate_content.py
-        run: |
-          python generate_content.py
+    - name: Run generate_content.py
+      run: |
+        python generate_content.py
 
-      - name: Commit and push changes
-        run: |
-          git add index.html
-          git commit -m "Updated blog content"
-          git push
+    - name: Commit changes
+      run: |
+        git config --global user.email "your_email@example.com"
+        git config --global user.name "Your Name"
+        git add index.html
+        git commit -m "Update blog content"
+        git push
+
+    - name: Deploy to GitHub Pages
+      run: |
+        git push origin main
