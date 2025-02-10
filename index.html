@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Generated Blog</title>
-  </head>
-  <body>
+</head>
+<body>
     <h1>Welcome to My AI-Generated Blog</h1>
     <div id="generated-content">
-      <!-- AI-generated content will appear here -->
+        <p>{{ generated_content }}</p>
     </div>
-  </body>
+    <div id="affiliate-link">
+        <p>Check out the latest deals on Amazon: 
+            <a href="{{ affiliate_link }}" target="_blank">Amazon Affiliate Link</a>
+        </p>
+    </div>
+</body>
 </html>
