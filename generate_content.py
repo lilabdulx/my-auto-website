@@ -15,7 +15,7 @@ response = openai.Completion.create(
 generated_text = response.choices[0].text.strip()
 
 # Your Amazon Affiliate Tracking ID (Replace this with your actual tracking ID)
-affiliate_tracking_id = "your_tracking_id"
+affiliate_tracking_id = "techfocusnow-21"
 
 # Construct the Amazon Affiliate link
 affiliate_link = f"https://www.amazon.com/dp/B08R6V2V9Y?tag={affiliate_tracking_id}"
